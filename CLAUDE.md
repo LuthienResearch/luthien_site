@@ -30,6 +30,12 @@
 - **Media**: Compress images before adding to the repository
 - **Accessibility**: Include proper alt text for images, maintain good color contrast
 
+## Build Outputs
+- **public/**: Directory with files built for deployment (uses absolute URLs)
+- **local-preview/**: Directory with files prepared for local browsing (uses relative URLs)
+- Both directories are automatically populated by the `npm run build` command
+- NEVER edit these files directly - they are generated from source files
+
 ## CSS Troubleshooting
 - **Selector Specificity**: Use `.nav a.button-class` instead of just `.button-class` to override navigation styles
 - **Important Declarations**: Use `!important` sparingly, but it's appropriate for ensuring button text colors
