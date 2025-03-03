@@ -1,0 +1,44 @@
+---
+layout: base.njk
+title: About
+---
+
+{% block content %}
+<h1>ABOUT LUTHIEN</h1>
+<div class="tagline">{{ site.description }}</div>
+
+<div class="content">
+    <p>
+        Luthien is developing AI Control, as proposed in 
+        <a href="https://arxiv.org/abs/2312.06942" target="_blank" class="inline-link">
+        "AI Control: Improving Safety Despite Intentional Subversion"</a> (2023),
+        into a production-ready solution that can be deployed in real-world AI systems.
+    </p>
+    
+    <p>
+        Based in Seattle, Luthien is the only AI Safety organization headquartered in the Pacific Northwest.
+        Our secondary mission is to establish a robust AI Safety presence in Seattle, creating a community
+        of researchers and engineers dedicated to ensuring AI systems remain safe and aligned with human values.
+    </p>
+    
+    <p>
+        Luthien was founded by Jai Dhyani, a former Meta ML Software Engineer, MATS alumnus, and co-author on 
+        METR's <a href="https://arxiv.org/abs/2411.15114" target="_blank" class="inline-link">
+        "RE-Bench: Evaluating frontier AI R&D capabilities of language model agents against human experts"</a> (2024).
+    </p>
+    
+    <p>
+        Currently operating as a minimal organization, Luthien is looking to grow quickly. We exist thanks to
+        generous small donors and a seed grant from the AI Safety Tactical Opportunities Fund. Your donations 
+        will directly accelerate the development of practical AI Control solutions.
+    </p>
+    
+    <p>
+        <a href="{{ site.donationUrl }}" target="_blank" class="contact">Donate</a> to help us expand our work on production-ready AI Control. Every contribution makes a difference.
+    </p>
+    
+    <p>
+        <a href="mailto:{{ site.contactEmail }}" class="contact">Contact us</a> to learn more about our work or to discuss partnership opportunities.
+    </p>
+</div>
+{% endblock %}
