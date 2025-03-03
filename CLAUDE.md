@@ -30,11 +30,12 @@
 - **Media**: Compress images before adding to the repository
 - **Accessibility**: Include proper alt text for images, maintain good color contrast
 
-## Build Outputs
+## Build and Preview
 - **public/**: Directory with files built for deployment (uses absolute URLs)
-- **local-preview/**: Directory with files prepared for local browsing (uses relative URLs)
-- Both directories are automatically populated by the `npm run build` command
-- NEVER edit these files directly - they are generated from source files
+- **local-preview/**: Contains an index.html with direct file:// links to preview pages
+- For local development, use `npm start` to run the development server
+- For quick file browsing, use `npm run preview` to open the local-preview index
+- NEVER edit generated files in public/ directly - they are built from source files
 
 ## CSS Troubleshooting
 - **Selector Specificity**: Use `.nav a.button-class` instead of just `.button-class` to override navigation styles

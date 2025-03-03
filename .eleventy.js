@@ -1,91 +1,92 @@
-// Build configuration for both deployment and local preview
 const fs = require('fs');
 const path = require('path');
 
+// Configuration for building the site
 module.exports = function(eleventyConfig) {
-  // Copy the `assets` directory to the outputs
+  // Copy the assets directory to the output
   eleventyConfig.addPassthroughCopy("assets");
   
-  // Add filter for deployment URLs (absolute paths)
-  eleventyConfig.addFilter("deployUrl", function(url) {
+  // URL filter for deployment (absolute paths)
+  eleventyConfig.addFilter("url", function(url) {
     return url;
   });
   
-  // Add filter for local URLs (relative paths)
-  eleventyConfig.addFilter("localUrl", function(url) {
-    // Remove leading slash for local file browsing
-    return url.replace(/^\//, '');
-  });
-  
-  // After the build is complete, create a parallel local-preview version
-  eleventyConfig.on('afterBuild', () => {
+  // After the build is complete, create a local-preview version
+  eleventyConfig.on('afterBuild', async () => {
     console.log('Creating local preview versions...');
     
-    // Read the generated HTML files
-    const publicDir = path.join(__dirname, 'public');
-    const localPreviewDir = path.join(__dirname, 'local-preview');
+    // Create a simple local HTML file for browsing
+    const localIndexHtml = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Development</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #0d1117;
+            color: #f0f6fc;
+        }
+        h1 {
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 0.5rem;
+        }
+        a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .files {
+            background: #161b22;
+            border-radius: 6px;
+            padding: 1rem;
+        }
+        .note {
+            font-size: 0.9rem;
+            color: #8b949e;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #30363d;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Luthien Site - Local Preview</h1>
+    <p>These files are for local development and testing.</p>
     
-    // Ensure local-preview directory exists
+    <div class="files">
+        <h2>Pages:</h2>
+        <p><a href="file://${path.join(__dirname, 'public/index.html')}">Home Page</a></p>
+        <p><a href="file://${path.join(__dirname, 'public/about/index.html')}">About Page</a></p>
+        <p><a href="file://${path.join(__dirname, 'public/button-test.html')}">Button Test Page</a></p>
+    </div>
+    
+    <div class="note">
+        <strong>Note:</strong> These links open the raw HTML files with <code>file://</code> protocol.
+        For a more realistic preview with proper paths, use <code>npm start</code> to launch the development server.
+    </div>
+</body>
+</html>`;
+
+    // Write the local preview HTML
+    const localPreviewDir = path.join(__dirname, 'local-preview');
     if (!fs.existsSync(localPreviewDir)) {
       fs.mkdirSync(localPreviewDir, { recursive: true });
     }
     
-    // Copy over the assets
-    fs.cpSync(path.join(__dirname, 'assets'), path.join(localPreviewDir, 'assets'), { recursive: true });
-    
-    // Function to process HTML files for local viewing
-    const processHtmlFile = (file, sourceDir, destDir) => {
-      const content = fs.readFileSync(path.join(sourceDir, file), 'utf8');
-      
-      // Determine depth based on the directory structure
-      const depth = file.split('/').length - 1;
-      const prefix = depth > 0 ? '../'.repeat(depth) : '';
-      
-      // Transform absolute paths to relative
-      let localContent = content
-        .replace(/href="\//g, `href="${prefix}`)
-        .replace(/src="\//g, `src="${prefix}`)
-        .replace(/href="index/g, 'href="index')
-        .replace(/href="about\//g, 'href="about');
-        
-      // Fix CSS paths for subdirectories
-      if (depth > 0) {
-        localContent = localContent.replace(/href="assets\//g, `href="../assets/`);
-      }
-      
-      fs.writeFileSync(path.join(destDir, file), localContent);
-    };
-    
-    // Copy and transform all HTML files in the public directory
-    const processDirectory = (sourceDir, destDir, parentPath = '') => {
-      const items = fs.readdirSync(sourceDir, { withFileTypes: true });
-      
-      items.forEach(item => {
-        const srcPath = path.join(sourceDir, item.name);
-        const destPath = path.join(destDir, item.name);
-        const relativePath = parentPath ? path.join(parentPath, item.name) : item.name;
-        
-        if (item.isDirectory()) {
-          if (!fs.existsSync(destPath)) {
-            fs.mkdirSync(destPath, { recursive: true });
-          }
-          processDirectory(srcPath, destPath, relativePath);
-        } else if (item.name.endsWith('.html')) {
-          processHtmlFile(relativePath, sourceDir, destDir);
-        } else {
-          // Copy non-HTML files directly
-          fs.copyFileSync(srcPath, destPath);
-        }
-      });
-    };
-    
-    // Process the public directory recursively
-    processDirectory(publicDir, localPreviewDir);
-    
-    console.log('Local preview versions created successfully!');
+    fs.writeFileSync(path.join(localPreviewDir, 'index.html'), localIndexHtml);
+    console.log('Local preview index created successfully!');
   });
   
-  // Set custom directories for input, output, includes, and data
+  // Set directories for input, output, includes, and data
   return {
     dir: {
       input: "src",
