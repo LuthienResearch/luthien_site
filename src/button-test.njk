@@ -1,0 +1,306 @@
+---
+layout: base.njk
+title: Button Test
+permalink: button-test.html
+---
+
+{% block content %}
+<style>
+  .button-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+    text-align: left;
+    max-width: 900px;
+  }
+  
+  .option {
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 1.5rem;
+    background-color: #151b24;
+  }
+  
+  .option h3 {
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #c9d1d9;
+  }
+  
+  /* BUTTON OPTIONS */
+  
+  /* Option 1: Current button */
+  .donate-1 {
+    background-color: #0969da;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-block;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  }
+  
+  .donate-1:hover {
+    background-color: #2188ff;
+  }
+  
+  /* Option 2: High contrast green */
+  .donate-2 {
+    background-color: #2ea043;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+  
+  .donate-2:hover {
+    background-color: #3fb950;
+  }
+  
+  /* Option 3: Black and white */
+  .donate-3 {
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+  
+  .donate-3:hover {
+    background-color: #e6e6e6;
+  }
+  
+  /* Option 4: Solid purple */
+  .donate-4 {
+    background-color: #8957e5;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+  
+  .donate-4:hover {
+    background-color: #a371f7;
+  }
+  
+  /* Option 5: Outline button */
+  .donate-5 {
+    background-color: transparent;
+    color: #58a6ff;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-block;
+    border: 1px solid #58a6ff;
+  }
+  
+  .donate-5:hover {
+    background-color: rgba(88, 166, 255, 0.1);
+  }
+  
+  /* Option 6: Gradient blue */
+  .donate-6 {
+    background: linear-gradient(to right, #0969da, #39a5dc);
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+  
+  .donate-6:hover {
+    background: linear-gradient(to right, #1369d0, #4fb3ec);
+  }
+  
+  /* Option 7: Orange button */
+  .donate-7 {
+    background-color: #f85149;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+  
+  .donate-7:hover {
+    background-color: #fa6c65;
+  }
+  
+  /* Option 8: Rounded with glow */
+  .donate-8 {
+    background-color: #0969da;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-block;
+    box-shadow: 0 0 10px rgba(9, 105, 218, 0.5);
+  }
+  
+  .donate-8:hover {
+    background-color: #2188ff;
+    box-shadow: 0 0 15px rgba(33, 136, 255, 0.6);
+  }
+  
+  /* Option 9: Flat design */
+  .donate-9 {
+    background-color: #0969da;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.9rem;
+  }
+  
+  .donate-9:hover {
+    background-color: #2188ff;
+  }
+  
+  /* Option 10: Larger, more prominent */
+  .donate-10 {
+    background-color: #0969da;
+    color: white;
+    text-decoration: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    display: inline-block;
+    font-size: 1.1rem;
+  }
+  
+  .donate-10:hover {
+    background-color: #2188ff;
+    transform: translateY(-2px);
+  }
+  
+  /* Option 11: Bold red */
+  .donate-11 {
+    background-color: #cf222e;
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+  
+  .donate-11:hover {
+    background-color: #e5534b;
+  }
+
+  /* Option 12: Gray with Blue Text */
+  .donate-12 {
+    background-color: #2d333b;
+    color: #58a6ff; 
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+  
+  .donate-12:hover {
+    background-color: #3c444d;
+  }
+</style>
+
+<h1>BUTTON OPTIONS</h1>
+<div class="tagline">Please select the style you prefer</div>
+
+<div class="button-grid">
+  <div class="option">
+    <h3>Option 1: Current Blue</h3>
+    <a href="#" class="donate-1">Donate</a>
+  </div>
+  
+  <div class="option">
+    <h3>Option 2: Green</h3>
+    <a href="#" class="donate-2">Donate</a>
+  </div>
+  
+  <div class="option">
+    <h3>Option 3: Black & White</h3>
+    <a href="#" class="donate-3">Donate</a>
+  </div>
+  
+  <div class="option">
+    <h3>Option 4: Purple</h3>
+    <a href="#" class="donate-4">Donate</a>
+  </div>
+  
+  <div class="option">
+    <h3>Option 5: Outline</h3>
+    <a href="#" class="donate-5">Donate</a>
+  </div>
+  
+  <div class="option">
+    <h3>Option 6: Gradient</h3>
+    <a href="#" class="donate-6">Donate</a>
+  </div>
+  
+  <div class="option">
+    <h3>Option 7: Red/Orange</h3>
+    <a href="#" class="donate-7">Donate</a>
+  </div>
+  
+  <div class="option">
+    <h3>Option 8: Rounded & Glow</h3>
+    <a href="#" class="donate-8">Donate</a>
+  </div>
+  
+  <div class="option">
+    <h3>Option 9: Flat</h3>
+    <a href="#" class="donate-9">Donate</a>
+  </div>
+  
+  <div class="option">
+    <h3>Option 10: Large</h3>
+    <a href="#" class="donate-10">Donate</a>
+  </div>
+  
+  <div class="option">
+    <h3>Option 11: Bold Red</h3>
+    <a href="#" class="donate-11">Donate</a>
+  </div>
+  
+  <div class="option">
+    <h3>Option 12: Gray with Blue Text</h3>
+    <a href="#" class="donate-12">Donate</a>
+  </div>
+</div>
+
+<p style="margin-top: 3rem; text-align: center;">
+  <a href="/" class="contact">Return to Home</a>
+</p>
+{% endblock %}
