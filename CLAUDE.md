@@ -2,8 +2,8 @@
 
 ## Development Commands
 - **Local Development**: `npm start` (runs Eleventy with live reload)
-- **Build for Production**: `npm run build` (generates static site in _site directory)
-- **HTML Validation**: `npx html-validate _site/**/*.html` (requires npm install -g html-validate)
+- **Build for Production**: `npm run build` (generates static site in public directory)
+- **HTML Validation**: `npx html-validate public/**/*.html` (requires npm install -g html-validate)
 - **CSS Validation**: `npx stylelint "assets/css/*.css"` (requires npm install -g stylelint)
 
 ## Project Structure
@@ -12,7 +12,7 @@
 - `src/_includes/` - Reusable components and layouts
 - `src/_data/` - Site configuration and global data
 - `assets/css/` - CSS stylesheets
-- `_site/` - Generated output (not committed to git)
+- `public/` - Generated output (not committed to git)
 
 ## Style Guidelines
 - **Templates**: Use Nunjucks (.njk) for templating
@@ -30,6 +30,20 @@
 - **Media**: Compress images before adding to the repository
 - **Accessibility**: Include proper alt text for images, maintain good color contrast
 
+## CSS Troubleshooting
+- **Selector Specificity**: Use `.nav a.button-class` instead of just `.button-class` to override navigation styles
+- **Important Declarations**: Use `!important` sparingly, but it's appropriate for ensuring button text colors
+- **Testing Changes**: When making CSS changes, always check both the home and about pages to ensure consistent styling
+- **Navigation Elements**: Always make sure navigation links and buttons have sufficient contrast (WCAG AA minimum)
+- **Mobile Testing**: Verify all changes in mobile view as the navigation collapses to a vertical layout
+
 ## Deployment
 - Automatically deploys to Netlify when pushed to main branch
 - Configuration in netlify.toml
+
+## Future Improvements
+- Consider adding a favicon
+- Add meta tags for SEO and social sharing
+- Implement proper site analytics
+- Create a dedicated donations page with multiple options
+- Add smooth transitions between pages
