@@ -26,7 +26,7 @@
   - Secondary text: `--text-secondary: #8b949e`
   - Content text: `--content-text: #c9d1d9`
   - Accent blue: `--accent-blue: #58a6ff`
-  - Button background: `--button-bg: #1f6feb`
+  - Button background: `--button-bg: #0969da` (with white text for high contrast)
 - **Media**: Compress images before adding to the repository
 - **Accessibility**: Include proper alt text for images, maintain good color contrast
 

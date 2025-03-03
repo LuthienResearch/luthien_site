@@ -5,8 +5,8 @@
     --text-secondary: #8b949e;  /* Secondary/muted text */
     --accent-blue: #58a6ff;     /* Main accent blue */
     --accent-blue-hover: #79baff; /* Lighter blue for hover states */
-    --button-bg: #1f6feb;       /* Button background - darker, more saturated blue */
-    --button-hover: #388bfd;    /* Button hover state */
+    --button-bg: #0969da;       /* Button background - high contrast blue */
+    --button-hover: #2188ff;    /* Button hover state - brighter blue */
     --content-text: #c9d1d9;    /* Content paragraph text */
     --link-border: rgba(88, 166, 255, 0.4); /* Underline for inline links */
 }
@@ -76,20 +76,21 @@ h1 {
 
 .donate-button {
     background-color: var(--button-bg);
-    color: var(--text-primary);
+    color: white; /* Pure white text for maximum contrast */
     text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
+    font-weight: 600; /* Bolder text */
+    transition: all 0.2s ease;
     margin-left: 1.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     letter-spacing: 0.02em;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); /* Subtle text shadow for better readability */
 }
 
 .donate-button:hover {
     background-color: var(--button-hover);
-    color: var(--text-primary);
+    color: white; /* Keep pure white on hover */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
