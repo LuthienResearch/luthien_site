@@ -1,3 +1,16 @@
+:root {
+    /* Color Palette */
+    --bg-dark: #0d1117;         /* Dark background */
+    --text-primary: #f0f6fc;    /* Primary text color */
+    --text-secondary: #8b949e;  /* Secondary/muted text */
+    --accent-blue: #58a6ff;     /* Main accent blue */
+    --accent-blue-hover: #79baff; /* Lighter blue for hover states */
+    --button-bg: #1f6feb;       /* Button background - darker, more saturated blue */
+    --button-hover: #388bfd;    /* Button hover state */
+    --content-text: #c9d1d9;    /* Content paragraph text */
+    --link-border: rgba(88, 166, 255, 0.4); /* Underline for inline links */
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -5,8 +18,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #0a0a0a;
-    color: #ffffff;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
@@ -25,19 +38,19 @@ h1 {
 .tagline {
     font-size: 1.2rem;
     margin: 1rem 0 2rem;
-    color: #888;
+    color: var(--text-secondary);
     font-weight: 300;
 }
 
 .contact {
-    color: #4a9eff;
+    color: var(--accent-blue);
     text-decoration: none;
     font-size: 1.1rem;
     transition: color 0.2s ease;
 }
 
 .contact:hover {
-    color: #66b1ff;
+    color: var(--accent-blue-hover);
 }
 
 /* Navigation */
@@ -50,7 +63,7 @@ h1 {
 }
 
 .nav a {
-    color: #888;
+    color: var(--text-secondary);
     text-decoration: none;
     margin-left: 1.5rem;
     font-size: 1rem;
@@ -58,23 +71,26 @@ h1 {
 }
 
 .nav a:hover {
-    color: #ffffff;
+    color: var(--text-primary);
 }
 
 .donate-button {
-    background-color: #4a9eff;
-    color: #ffffff;
+    background-color: var(--button-bg);
+    color: var(--text-primary);
     text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
     font-weight: 500;
     transition: background-color 0.2s ease;
     margin-left: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.02em;
 }
 
 .donate-button:hover {
-    background-color: #66b1ff;
-    color: #ffffff;
+    background-color: var(--button-hover);
+    color: var(--text-primary);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* About page specific styles */
@@ -87,20 +103,20 @@ h1 {
 
 .content p {
     margin-bottom: 1.5rem;
-    color: #aaa;
+    color: var(--content-text);
 }
 
 .inline-link {
-    color: #4a9eff;
+    color: var(--accent-blue);
     text-decoration: none;
-    transition: color 0.2s ease;
-    border-bottom: 1px solid rgba(74, 158, 255, 0.3);
+    transition: all 0.2s ease;
+    border-bottom: 1px solid var(--link-border);
     padding-bottom: 1px;
 }
 
 .inline-link:hover {
-    color: #66b1ff;
-    border-bottom-color: rgba(102, 177, 255, 0.7);
+    color: var(--accent-blue-hover);
+    border-bottom-color: var(--accent-blue);
 }
 
 @media (max-width: 600px) {

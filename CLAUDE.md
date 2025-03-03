@@ -20,7 +20,13 @@
 - **CSS**: Maintain styles in external CSS files
 - **Naming**: Use descriptive, kebab-case for files and CSS classes
 - **Formatting**: 4-space indentation, UTF-8 encoding
-- **Colors**: Main palette: Background #0a0a0a, Text #ffffff, Accent #4a9eff, Muted #888
+- **Colors**: Main palette defined in CSS variables:
+  - Background: `--bg-dark: #0d1117`
+  - Primary text: `--text-primary: #f0f6fc`
+  - Secondary text: `--text-secondary: #8b949e`
+  - Content text: `--content-text: #c9d1d9`
+  - Accent blue: `--accent-blue: #58a6ff`
+  - Button background: `--button-bg: #1f6feb`
 - **Media**: Compress images before adding to the repository
 - **Accessibility**: Include proper alt text for images, maintain good color contrast
 
