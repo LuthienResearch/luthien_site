@@ -64,11 +64,25 @@ h1 {
     max-width: 800px;
     margin: 0 auto;
     line-height: 1.6;
+    text-align: left;
 }
 
 .content p {
     margin-bottom: 1.5rem;
     color: #aaa;
+}
+
+.inline-link {
+    color: #4a9eff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    border-bottom: 1px solid rgba(74, 158, 255, 0.3);
+    padding-bottom: 1px;
+}
+
+.inline-link:hover {
+    color: #66b1ff;
+    border-bottom-color: rgba(102, 177, 255, 0.7);
 }
 
 @media (max-width: 600px) {
@@ -83,5 +97,9 @@ h1 {
     .nav {
         top: 1rem;
         right: 1rem;
+    }
+    
+    .content {
+        padding: 0 1rem;
     }
 }
