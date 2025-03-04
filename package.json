@@ -4,8 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "eleventy --serve",
-    "build": "eleventy",
-    "preview": "open local-preview/index.html"
+    "build": "eleventy"
   },
   "repository": {
     "type": "git",

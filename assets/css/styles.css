@@ -74,23 +74,29 @@ h1 {
     color: var(--text-primary);
 }
 
+/* Donate button styling */
 .donate-button {
     background-color: var(--button-bg);
-    color: white; /* Pure white text for maximum contrast */
-    text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    font-weight: 600; /* Bolder text */
+    font-weight: 700; /* Bolder text */
     transition: all 0.2s ease;
     margin-left: 1.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     letter-spacing: 0.02em;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); /* Subtle text shadow for better readability */
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-.donate-button:hover {
+/* More specific selector to override .nav a */
+.nav a.donate-button {
+    color: #ffffff !important; /* Force white text with !important */
+    text-decoration: none !important;
+}
+
+.donate-button:hover, 
+.nav a.donate-button:hover {
     background-color: var(--button-hover);
-    color: white; /* Keep pure white on hover */
+    color: #ffffff !important; /* Keep pure white on hover */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 

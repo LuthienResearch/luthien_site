@@ -2,8 +2,8 @@
 
 ## Development Commands
 - **Local Development**: `npm start` (runs Eleventy with live reload)
-- **Build for Production**: `npm run build` (generates static site in public directory)
-- **HTML Validation**: `npx html-validate public/**/*.html` (requires npm install -g html-validate)
+- **Build for Production**: `npm run build` (generates static site in _site directory)
+- **HTML Validation**: `npx html-validate _site/**/*.html` (requires npm install -g html-validate)
 - **CSS Validation**: `npx stylelint "assets/css/*.css"` (requires npm install -g stylelint)
 
 ## Project Structure
@@ -12,7 +12,7 @@
 - `src/_includes/` - Reusable components and layouts
 - `src/_data/` - Site configuration and global data
 - `assets/css/` - CSS stylesheets
-- `public/` - Generated output (not committed to git)
+- `_site/` - Generated output (not committed to git)
 
 ## Style Guidelines
 - **Templates**: Use Nunjucks (.njk) for templating
@@ -31,11 +31,8 @@
 - **Accessibility**: Include proper alt text for images, maintain good color contrast
 
 ## Build and Preview
-- **public/**: Directory with files built for deployment (uses absolute URLs)
-- **local-preview/**: Contains an index.html with direct file:// links to preview pages
-- For local development, use `npm start` to run the development server
-- For quick file browsing, use `npm run preview` to open the local-preview index
-- NEVER edit generated files in public/ directly - they are built from source files
+- For local development, use `npm start` to run the development server with live reload
+- NEVER edit generated files in _site/ directly - they are built from source files
 
 ## CSS Troubleshooting
 - **Selector Specificity**: Use `.nav a.button-class` instead of just `.button-class` to override navigation styles
