@@ -1,0 +1,24 @@
+---
+layout: base.njk
+title: Updates
+---
+
+<div class="updates-container">
+    <h1>Latest Updates</h1>
+    
+    {% if collections.updates.length %}
+        <div class="updates-list">
+            {% for update in collections.updates %}
+                <div class="update-item">
+                    <h2><a href="{{ update.url | url }}">{{ update.data.title }}</a></h2>
+                    <div class="update-date">{{ update.date | formatDate }}</div>
+                    {% if update.data.description %}
+                        <div class="update-description">{{ update.data.description }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No updates available yet. Please check back soon.</p>
+    {% endif %}
+</div>

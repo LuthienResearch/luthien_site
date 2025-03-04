@@ -8,6 +8,22 @@ module.exports = function(eleventyConfig) {
     return url;
   });
   
+  // Add a collection for updates
+  eleventyConfig.addCollection("updates", function(collectionApi) {
+    return collectionApi.getFilteredByGlob("src/updates/*.md").sort((a, b) => {
+      return b.date - a.date; // Sort in reverse chronological order
+    });
+  });
+  
+  // Format date filter
+  eleventyConfig.addFilter("formatDate", function(date) {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  });
+  
   // Set directories for input, output, includes, and data
   return {
     dir: {
@@ -17,6 +33,7 @@ module.exports = function(eleventyConfig) {
       output: "_site"
     },
     templateFormats: ["njk", "md", "html"],
-    htmlTemplateEngine: "njk"
+    htmlTemplateEngine: "njk",
+    markdownTemplateEngine: "njk"
   };
 };

@@ -9,6 +9,7 @@
     --button-hover: #2188ff;    /* Button hover state - brighter blue */
     --content-text: #c9d1d9;    /* Content paragraph text */
     --link-border: rgba(88, 166, 255, 0.4); /* Underline for inline links */
+    --border-color: #30363d;    /* Border color for dividers */
 }
 
 body {
@@ -126,6 +127,88 @@ h1 {
     border-bottom-color: var(--accent-blue);
 }
 
+/* Updates styling */
+.updates-container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+  padding-top: 2rem;
+}
+
+.updates-list {
+  margin-top: 2rem;
+}
+
+.update-item {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.update-item:last-child {
+  border-bottom: none;
+}
+
+.update-item h2 {
+  margin-bottom: 0.5rem;
+}
+
+.update-item h2 a {
+  color: var(--accent-blue);
+  text-decoration: none;
+}
+
+.update-item h2 a:hover {
+  text-decoration: underline;
+}
+
+.update-date {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.update-description {
+  line-height: 1.6;
+  color: var(--content-text);
+}
+
+/* Individual update page */
+.update {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+  padding-top: 2rem;
+}
+
+.update header {
+  margin-bottom: 2rem;
+}
+
+.update-content {
+  line-height: 1.8;
+  color: var(--content-text);
+}
+
+.update-content p {
+  margin-bottom: 1.5rem;
+}
+
+.update footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.back-to-updates {
+  color: var(--accent-blue);
+  text-decoration: none;
+}
+
+.back-to-updates:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 600px) {
     h1 {
         font-size: 2.5rem;
@@ -146,7 +229,7 @@ h1 {
         margin: 0.5rem 0 0 0;
     }
     
-    .content {
+    .content, .updates-container, .update {
         padding: 0 1rem;
         margin-top: 5rem;
     }

@@ -1,0 +1,18 @@
+---
+layout: base.njk
+---
+
+<article class="update">
+    <header>
+        <h1>{{ title }}</h1>
+        <div class="update-date">{{ page.date | formatDate }}</div>
+    </header>
+    
+    <div class="update-content">
+        {{ content | safe }}
+    </div>
+    
+    <footer>
+        <a href="{{ '/updates/' | url }}" class="back-to-updates">&larr; Back to all updates</a>
+    </footer>
+</article>
