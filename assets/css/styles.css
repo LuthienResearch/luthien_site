@@ -175,6 +175,16 @@ h1 {
   text-decoration: underline;
 }
 
+.date-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.date-link:hover {
+  color: var(--accent-blue);
+  text-decoration: underline;
+}
+
 .update-date {
   font-size: 0.9rem;
   color: var(--text-secondary);

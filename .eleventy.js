@@ -43,6 +43,23 @@ module.exports = function(eleventyConfig) {
     return content.replace(/href="\/(?!\/)/g, `href="${baseUrl}/`);
   });
   
+  // Configure permalinks for content types
+  eleventyConfig.addGlobalData("permalinkByLayout", {
+    "update.njk": data => {
+      const title = data.title.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-');
+      return `/updates/${title}/`;
+    }
+  });
+
+  // Apply permalinks based on layout if not manually specified
+  eleventyConfig.addGlobalData("permalink", function(data) {
+    if (data.permalink) return data.permalink;
+    if (data.layout && this.permalinkByLayout && this.permalinkByLayout[data.layout]) {
+      return this.permalinkByLayout[data.layout](data);
+    }
+    return;
+  });
+
   // Set directories for input, output, includes, and data
   return {
     dir: {

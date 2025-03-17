@@ -10,8 +10,8 @@ title: Updates
         <div class="updates-list">
             {% for update in collections.updates %}
                 <div class="update-item">
-                    <h2>{{ update.data.title }}</h2>
-                    <div class="update-date">{{ update.date | formatDate }}</div>
+                    <h2><a href="{{ update.url | url }}">{{ update.data.title }}</a></h2>
+                    <div class="update-date"><a href="{{ update.url | url }}" class="date-link">{{ update.date | formatDate }}</a></div>
                     <div class="update-content">
                         {{ update.content | safe }}
                     </div>
