@@ -14,6 +14,17 @@
 - `assets/css/` - CSS stylesheets
 - `_site/` - Generated output (not committed to git)
 
+## Key Files Summary
+- `src/_data/site.json` - Site metadata (title, description, contact email, donation URL)
+- `src/_includes/base.njk` - Base layout template
+- `src/_includes/navigation.njk` - Navigation bar
+- `src/_includes/update.njk` - Layout for individual update posts
+- `src/index.njk` - Homepage
+- `src/about.njk` - About page
+- `src/updates.njk` - Updates listing page
+- `src/feed.njk` - RSS feed template
+- `assets/css/styles.css` - Main stylesheet
+
 ## Style Guidelines
 - **Templates**: Use Nunjucks (.njk) for templating
 - **HTML**: Use HTML5 semantic elements, lowercase tags, double quotes for attributes
