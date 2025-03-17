@@ -8,9 +8,18 @@ module.exports = function(eleventyConfig) {
     return url;
   });
   
-  // Add a collection for updates
+  // Add a collection for updates with automatic permalinks
   eleventyConfig.addCollection("updates", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("src/updates/*.md").sort((a, b) => {
+    return collectionApi.getFilteredByGlob("src/updates/*.md").map(item => {
+      // Generate SEO-friendly slug from title if permalink not specified
+      if (!item.data.permalink) {
+        const title = item.data.title.toLowerCase()
+          .replace(/[^\w\s]/g, '')  // Remove special chars
+          .replace(/\s+/g, '-');    // Replace spaces with hyphens
+        item.data.permalink = `/updates/${title}/`;
+      }
+      return item;
+    }).sort((a, b) => {
       return b.date - a.date; // Sort in reverse chronological order
     });
   });
@@ -41,23 +50,6 @@ module.exports = function(eleventyConfig) {
   // Convert HTML links to absolute URLs for feeds
   eleventyConfig.addFilter("htmlToAbsoluteUrls", function(content, baseUrl) {
     return content.replace(/href="\/(?!\/)/g, `href="${baseUrl}/`);
-  });
-  
-  // Configure permalinks for content types
-  eleventyConfig.addGlobalData("permalinkByLayout", {
-    "update.njk": data => {
-      const title = data.title.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-');
-      return `/updates/${title}/`;
-    }
-  });
-
-  // Apply permalinks based on layout if not manually specified
-  eleventyConfig.addGlobalData("permalink", function(data) {
-    if (data.permalink) return data.permalink;
-    if (data.layout && this.permalinkByLayout && this.permalinkByLayout[data.layout]) {
-      return this.permalinkByLayout[data.layout](data);
-    }
-    return;
   });
 
   // Set directories for input, output, includes, and data
