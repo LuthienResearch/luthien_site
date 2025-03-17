@@ -3,6 +3,7 @@ title: Luthien at ControlConf London 2025
 date: 2025-03-01
 layout: update.njk
 description: Join us at ControlConf in London this March to learn about our latest work in AI Control.
+permalink: /updates/controlconf-london-2025/
 ---
 
 We're excited to announce that Luthien will be attending **ControlConf** in London on **March 27-28, 2025**.

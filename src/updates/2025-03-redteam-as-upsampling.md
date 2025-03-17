@@ -3,6 +3,7 @@ title: Luthien's Approach to Prosaic AI Control in 21 Points
 date: 2025-03-17
 layout: update.njk
 description: We lay out our model of AI Control as a prosaic AI Security approach and our long-term vision
+permalink: /updates/ai-control-21-points/
 --- 
 
 AI Control was originally developed specifically to mitigate risks from "scheming" AIs - AIs that act as highly capable adversaries optimizing for specific harmful outcomes. But as of early 2025, scheming does not appear an immediate, practically relevant threat from any frontier models. So why is Luthien proposing to develop and deploy practical AI Control mechanisms in the real world *now*, when scheming isn't an immediate threat?
