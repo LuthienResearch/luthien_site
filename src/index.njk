@@ -12,7 +12,7 @@ layout: base.njk
                     <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
                 </svg>
             </span>
-            <span class="badge-right">Luthien Control</span>
+            <span class="badge-right">Luthien Proxy</span>
         </a>
         <a href="{{ '/updates/' | url }}" class="shields-badge updates-badge">
             <span class="badge-left updates-badge-left">
@@ -39,4 +39,79 @@ layout: base.njk
             <span class="badge-right donate-badge-right">Donate</span>
         </a>
     </div>
+</div>
+
+<div class="content">
+    <h2>Try the Luthien Proxy Alpha</h2>
+    <p>
+        The Luthien Proxy is now available in alpha. It's an OpenAI-compatible LLM proxy that brings
+        Redwood-style AI Control to production agentic deployments.
+    </p>
+
+    <p>
+        <strong>Prerequisites:</strong> Docker
+    </p>
+
+    <p>
+        Get started in minutes:
+    </p>
+
+    <div class="quickstart">
+        <pre><code># Clone the repository
+git clone https://github.com/luthienresearch/luthien-proxy.git
+cd luthien-proxy
+
+# Start the proxy (requires Docker)
+./scripts/quick_start.sh
+
+# Test it works
+uv run python scripts/test_proxy.py
+
+# Launch Claude Code or Codex with the proxy
+./scripts/launch_claude_code.sh
+# or
+./scripts/launch_codex.sh</code></pre>
+    </div>
+
+    <p>
+        <a href="{{ site.githubUrl }}" target="_blank" class="cta-button">View on GitHub →</a>
+    </p>
+
+    <p>
+        The proxy provides policy orchestration, decision logic, and full observability for your AI systems.
+        <a href="{{ '/about/' | url }}" class="inline-link">Learn more about our approach</a>.
+    </p>
+
+    <h3>Custom Policies</h3>
+    <p>
+        The proxy gives you complete control over requests and responses in-flight. Implement custom policies
+        to monitor, modify, block, or enhance any aspect of LLM interactions. Write policies in Python to:
+        inspect prompts, transform completions, enforce safety constraints, log interactions, or integrate
+        with external systems.
+    </p>
+    <p>
+        Write your policy in <code>src/luthien_proxy/policies/my_policy.py</code>, then configure it in
+        <code>config/luthien_config.yaml</code> by specifying the Python module path and class name:
+    </p>
+    <div class="quickstart">
+        <pre><code>policy:
+  class: "luthien_proxy.policies.my_policy:MyPolicy"
+  config:
+    your_setting: value</code></pre>
+    </div>
+    <p>
+        See
+        <a href="{{ site.githubUrl }}/blob/main/src/luthien_proxy/policies/all_caps.py" target="_blank" class="inline-link">all_caps.py</a>
+        for a simple toy example to understand the basics, or
+        <a href="{{ site.githubUrl }}/blob/main/src/luthien_proxy/policies/tool_call_judge.py" target="_blank" class="inline-link">tool_call_judge.py</a>
+        for a more realistic example that uses a local LLM to evaluate the safety of tool invocations before they reach your machine.
+    </p>
+
+    <h3>Early Development</h3>
+    <p>
+        Luthien Proxy is in active development and subject to rapid change. We encourage you to
+        <a href="{{ site.githubUrl }}" target="_blank" class="inline-link">star the repository</a> to follow updates
+        and <a href="{{ site.githubUrl }}/issues" target="_blank" class="inline-link">open issues</a> for bugs,
+        feature requests, or questions. Your feedback helps shape the future of production AI Control.
+    </p>
 </div>
