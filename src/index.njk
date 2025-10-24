@@ -49,7 +49,7 @@ layout: base.njk
     </p>
 
     <p>
-        <strong>Prerequisites:</strong> Docker
+        <strong>Prerequisites:</strong> Docker, Python 3.13+, and <code>uv</code> package manager
     </p>
 
     <p>
@@ -61,11 +61,17 @@ layout: base.njk
 git clone https://github.com/luthienresearch/luthien-proxy.git
 cd luthien-proxy
 
-# Start the proxy (requires Docker)
+# Configure environment
+cp .env.example .env
+# Edit .env and add your API keys:
+# - OPENAI_API_KEY
+# - ANTHROPIC_API_KEY
+
+# Start the proxy
 ./scripts/quick_start.sh
 
 # Test it works
-uv run python scripts/test_proxy.py
+./scripts/test_v2_gateway.sh
 
 # Launch Claude Code or Codex with the proxy
 ./scripts/launch_claude_code.sh
@@ -90,20 +96,72 @@ uv run python scripts/test_proxy.py
         with external systems.
     </p>
     <p>
-        Write your policy in <code>src/luthien_proxy/policies/my_policy.py</code>, then configure it in
-        <code>config/luthien_config.yaml</code> by specifying the Python module path and class name:
+        Create your policy class in <code>src/luthien_proxy/v2/policies/my_policy.py</code>:
+    </p>
+    <div class="quickstart">
+        <pre><code>from luthien_proxy.v2.streaming.event_based_policy import EventBasedPolicy
+from luthien_proxy.v2.policies.context import PolicyContext
+
+class MyPolicy(EventBasedPolicy):
+    async def on_request(self, request, context: PolicyContext):
+        # Inspect or modify requests
+        context.emit("policy.request", "Processing request")
+        return request
+
+    async def on_response(self, response, context: PolicyContext):
+        # Inspect or modify non-streaming responses
+        context.emit("policy.response", "Processing response")
+        return response
+
+    async def on_stream_start(self, context: PolicyContext, streaming_ctx):
+        # Initialize streaming state
+        context.scratchpad["chunks_processed"] = 0
+
+    async def on_content_delta(self, raw_chunk, block, context, streaming_ctx):
+        # Process content chunks as they arrive
+        context.scratchpad["chunks_processed"] += 1
+        # Default: forward immediately (inherited behavior)
+        await streaming_ctx.send_chunk(raw_chunk)
+
+    async def on_content_complete(self, block, context, streaming_ctx):
+        # Called when a complete content block finishes
+        content_text = block.content
+        context.emit("policy.content_done", f"Received {len(content_text)} chars")
+
+    async def on_tool_call_complete(self, block, context, streaming_ctx):
+        # Called when a complete tool call finishes buffering
+        tool_name = block.name
+        tool_args = block.arguments
+        context.emit("policy.tool_call", f"Tool: {tool_name}")
+        # Decide whether to forward, block, or modify the tool call
+        if streaming_ctx.is_output_finished():
+            return  # Already blocked by previous policy decision
+        await streaming_ctx.send_chunk(block.to_chunk())</code></pre>
+    </div>
+    <p>
+        <strong>Key concepts:</strong>
+    </p>
+    <ul>
+        <li><code>context</code> persists across all hook calls for a single request</li>
+        <li>Events trigger serially (in order) as each chunk arrives from the LLM</li>
+        <li>Use <code>on_content_complete</code> and <code>on_tool_call_complete</code> to inspect fully-buffered blocks</li>
+        <li><code>context.scratchpad</code> stores mutable state that persists across hooks</li>
+        <li><code>streaming_ctx.is_output_finished()</code> checks if a previous hook has already blocked the response</li>
+    </ul>
+    <p>
+        Then configure it in <code>config/v2_config.yaml</code>:
     </p>
     <div class="quickstart">
         <pre><code>policy:
-  class: "luthien_proxy.policies.my_policy:MyPolicy"
+  class: "luthien_proxy.v2.policies.my_policy:MyPolicy"
   config:
     your_setting: value</code></pre>
     </div>
     <p>
         See
-        <a href="{{ site.githubUrl }}/blob/main/src/luthien_proxy/policies/all_caps.py" target="_blank" class="inline-link">all_caps.py</a>
-        for a simple toy example to understand the basics, or
-        <a href="{{ site.githubUrl }}/blob/main/src/luthien_proxy/policies/tool_call_judge.py" target="_blank" class="inline-link">tool_call_judge.py</a>
+        <a href="{{ site.githubUrl }}/blob/main/src/luthien_proxy/v2/policies/event_based_noop.py" target="_blank" class="inline-link">event_based_noop.py</a>
+        for a minimal pass-through example, or
+        <a href="{{ site.githubUrl }}/blob/main/src/luthien_proxy/v2/policies/tool_call_judge_v3.py" target="_blank" class="inline-link">tool_call_judge_v3.py</a>
         for a more realistic example that uses a local LLM to evaluate the safety of tool invocations before they reach your machine.
     </p>
 
