@@ -44,8 +44,12 @@ layout: base.njk
 <div class="content">
     <h2>Try the Luthien Proxy Alpha</h2>
     <p>
-        The Luthien Proxy is now available in alpha. It's an OpenAI-compatible LLM proxy that brings
+        The Luthien Proxy is now available in alpha. It's a Claude Code and OpenAI Codex CLI compatible LLM proxy that brings
         Redwood-style AI Control to production agentic deployments.
+    </p>
+
+    <p>
+        <a href="{{ site.githubUrl }}" target="_blank" class="cta-button">View on GitHub →</a>
     </p>
 
     <p>
@@ -79,8 +83,12 @@ cp .env.example .env
 ./scripts/launch_codex.sh</code></pre>
     </div>
 
+    <h3>Verify Everything is Working</h3>
     <p>
-        <a href="{{ site.githubUrl }}" target="_blank" class="cta-button">View on GitHub →</a>
+        Once the proxy is running, navigate to <a href="http://localhost:8000/v2/activity/monitor" target="_blank" class="inline-link">http://localhost:8000/v2/activity/monitor</a>
+        to see the activity monitor. This real-time dashboard shows all requests flowing through the proxy,
+        policy decisions, and detailed event streams. As you interact with Claude Code or Codex, you'll see
+        requests, policy events, and responses appear in the monitor.
     </p>
 
     <p>
@@ -90,63 +98,83 @@ cp .env.example .env
 
     <h3>Custom Policies</h3>
     <p>
-        The proxy gives you complete control over requests and responses in-flight. Implement custom policies
-        to monitor, modify, block, or enhance any aspect of LLM interactions. Write policies in Python to:
-        inspect prompts, transform completions, enforce safety constraints, log interactions, or integrate
-        with external systems.
+        The proxy gives you complete control over requests and responses in-flight. Policies let you monitor,
+        modify, block, or enhance any aspect of LLM interactions. For most use cases, we recommend using
+        <code>SimpleEventBasedPolicy</code>, which provides a straightforward hook-based interface.
     </p>
+
+    <h4>Configure an Existing Policy</h4>
+    <p>
+        Start by trying one of the built-in policies. Edit <code>config/v2_config.yaml</code> to enable
+        the <code>SimpleToolFilterPolicy</code> that blocks dangerous tools:
+    </p>
+    <div class="quickstart">
+        <pre><code>policy:
+  class: "luthien_proxy.v2.policies.simple_tool_filter_example:SimpleToolFilterPolicy"
+  config:
+    blocked_tools:
+      - "execute_code"
+      - "Bash"</code></pre>
+    </div>
+    <p>
+        Restart the proxy and watch the activity monitor at
+        <a href="http://localhost:8000/v2/activity/monitor" target="_blank" class="inline-link">localhost:8000/v2/activity/monitor</a>
+        to see policy events as requests flow through. Try asking your LLM to run bash commands and watch them get blocked!
+    </p>
+
+    <h4>Implement Your Own Policy</h4>
     <p>
         Create your policy class in <code>src/luthien_proxy/v2/policies/my_policy.py</code>:
     </p>
     <div class="quickstart">
-        <pre><code>from luthien_proxy.v2.streaming.event_based_policy import EventBasedPolicy
-from luthien_proxy.v2.policies.context import PolicyContext
+        <pre><code>from luthien_proxy.v2.policies.simple_event_based_policy import SimpleEventBasedPolicy
+from luthien_proxy.v2.policies.policy_context import PolicyContext
 
-class MyPolicy(EventBasedPolicy):
+class MyPolicy(SimpleEventBasedPolicy):
+    def __init__(self, config):
+        super().__init__(config)
+        self.my_setting = config.get("my_setting", "default")
+
     async def on_request(self, request, context: PolicyContext):
-        # Inspect or modify requests
-        context.emit("policy.request", "Processing request")
+        # Inspect or modify requests before they reach the LLM
+        context.emit("policy.request", f"Processing request with {self.my_setting}")
         return request
 
-    async def on_response(self, response, context: PolicyContext):
-        # Inspect or modify non-streaming responses
-        context.emit("policy.response", "Processing response")
-        return response
+    async def on_response_content(self, content, context: PolicyContext, streaming_ctx):
+        # Called when complete content blocks finish
+        context.emit("policy.content", f"Received {len(content)} characters")
 
-    async def on_stream_start(self, context: PolicyContext, streaming_ctx):
-        # Initialize streaming state
-        context.scratchpad["chunks_processed"] = 0
+        # Example: transform content
+        if "dangerous" in content.lower():
+            return "[Content filtered for safety]"
 
-    async def on_content_delta(self, raw_chunk, block, context, streaming_ctx):
-        # Process content chunks as they arrive
-        context.scratchpad["chunks_processed"] += 1
-        # Default: forward immediately (inherited behavior)
-        await streaming_ctx.send_chunk(raw_chunk)
+        return content  # Return unchanged content
 
-    async def on_content_complete(self, block, context, streaming_ctx):
-        # Called when a complete content block finishes
-        content_text = block.content
-        context.emit("policy.content_done", f"Received {len(content_text)} chars")
-
-    async def on_tool_call_complete(self, block, context, streaming_ctx):
+    async def on_response_tool_call(self, block, context: PolicyContext, streaming_ctx):
         # Called when a complete tool call finishes buffering
         tool_name = block.name
         tool_args = block.arguments
-        context.emit("policy.tool_call", f"Tool: {tool_name}")
-        # Decide whether to forward, block, or modify the tool call
-        if streaming_ctx.is_output_finished():
-            return  # Already blocked by previous policy decision
-        await streaming_ctx.send_chunk(block.to_chunk())</code></pre>
+        context.emit("policy.tool_complete", f"Tool call: {tool_name}")
+
+        # Example: block dangerous operations
+        if tool_name == "Bash" and "rm -rf" in tool_args:
+            context.emit("policy.blocked", "Blocked dangerous command")
+            return None  # Block this tool call
+
+        return block  # Allow the tool call</code></pre>
     </div>
     <p>
         <strong>Key concepts:</strong>
     </p>
     <ul>
-        <li><code>context</code> persists across all hook calls for a single request</li>
-        <li>Events trigger serially (in order) as each chunk arrives from the LLM</li>
-        <li>Use <code>on_content_complete</code> and <code>on_tool_call_complete</code> to inspect fully-buffered blocks</li>
-        <li><code>context.scratchpad</code> stores mutable state that persists across hooks</li>
-        <li><code>streaming_ctx.is_output_finished()</code> checks if a previous hook has already blocked the response</li>
+        <li><code>SimpleEventBasedPolicy</code> automatically handles streaming and buffering</li>
+        <li><code>on_request()</code> lets you inspect or modify requests before they reach the LLM</li>
+        <li><code>on_response_content()</code> gives you complete content blocks as strings</li>
+        <li><code>on_response_tool_call()</code> gives you complete tool calls with full arguments</li>
+        <li>Return <code>None</code> from <code>on_response_tool_call()</code> to block a tool call</li>
+        <li>Return modified content/blocks to transform responses</li>
+        <li><code>context.emit()</code> sends events visible in the activity monitor</li>
+        <li><code>context.scratchpad</code> stores state that persists across hooks for a single request</li>
     </ul>
     <p>
         Then configure it in <code>config/v2_config.yaml</code>:
@@ -155,14 +183,24 @@ class MyPolicy(EventBasedPolicy):
         <pre><code>policy:
   class: "luthien_proxy.v2.policies.my_policy:MyPolicy"
   config:
-    your_setting: value</code></pre>
+    my_setting: "custom_value"</code></pre>
     </div>
     <p>
         See
-        <a href="{{ site.githubUrl }}/blob/main/src/luthien_proxy/v2/policies/event_based_noop.py" target="_blank" class="inline-link">event_based_noop.py</a>
-        for a minimal pass-through example, or
+        <a href="{{ site.githubUrl }}/blob/main/src/luthien_proxy/v2/policies/simple_uppercase_example.py" target="_blank" class="inline-link">simple_uppercase_example.py</a>
+        for a simple content transformation example, or
+        <a href="{{ site.githubUrl }}/blob/main/src/luthien_proxy/v2/policies/simple_tool_filter_example.py" target="_blank" class="inline-link">simple_tool_filter_example.py</a>
+        for tool call blocking.
+    </p>
+
+    <h4>Advanced: AI-Supervised Tool Calls</h4>
+    <p>
+        For production deployments requiring stronger safety guarantees, the
         <a href="{{ site.githubUrl }}/blob/main/src/luthien_proxy/v2/policies/tool_call_judge_v3.py" target="_blank" class="inline-link">tool_call_judge_v3.py</a>
-        for a more realistic example that uses a local LLM to evaluate the safety of tool invocations before they reach your machine.
+        policy demonstrates advanced streaming capabilities and local LLM review. It intercepts tool calls as they arrive,
+        sends them to a local language model for safety evaluation, and blocks dangerous operations before they execute.
+        This approach combines the speed of streaming with the intelligence of AI-powered decision-making, enabling
+        real-time protection without sacrificing responsiveness.
     </p>
 
     <h3>Early Development</h3>
