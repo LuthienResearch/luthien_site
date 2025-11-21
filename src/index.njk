@@ -75,7 +75,7 @@ cp .env.example .env
 ./scripts/quick_start.sh
 
 # Test it works
-./scripts/test_v2_gateway.sh
+./scripts/test_gateway.sh
 
 # Launch Claude Code or Codex with the proxy
 ./scripts/launch_claude_code.sh
@@ -85,7 +85,7 @@ cp .env.example .env
 
     <h3>Verify Everything is Working</h3>
     <p>
-        Once the proxy is running, navigate to <a href="http://localhost:8000/v2/activity/monitor" target="_blank" class="inline-link">http://localhost:8000/v2/activity/monitor</a>
+        Once the proxy is running, navigate to <a href="http://localhost:8000/activity/monitor" target="_blank" class="inline-link">http://localhost:8000/activity/monitor</a>
         to see the activity monitor. This real-time dashboard shows all requests flowing through the proxy,
         policy decisions, and detailed event streams. As you interact with Claude Code or Codex, you'll see
         requests, policy events, and responses appear in the monitor.
@@ -93,14 +93,12 @@ cp .env.example .env
 
     <p>
         The proxy provides policy orchestration, decision logic, and full observability for your AI systems.
-        <a href="{{ '/about/' | url }}" class="inline-link">Learn more about our approach</a>.
+        The proxy gives you complete control over requests and responses in-flight.
     </p>
 
-    <h3>Custom Policies</h3>
+    <h3>Policies</h3>
     <p>
-        The proxy gives you complete control over requests and responses in-flight. Policies let you monitor,
-        modify, block, or enhance any aspect of LLM interactions. For most use cases, we recommend using
-        <code>SimpleEventBasedPolicy</code>, which provides a straightforward hook-based interface.
+        Policies let you monitor, modify, block, or enhance any aspect of LLM interactions.
     </p>
 
     <h4>Configure an Existing Policy</h4>
@@ -118,12 +116,13 @@ cp .env.example .env
     </div>
     <p>
         Restart the proxy and watch the activity monitor at
-        <a href="http://localhost:8000/v2/activity/monitor" target="_blank" class="inline-link">localhost:8000/v2/activity/monitor</a>
+        <a href="http://localhost:8000/activity/monitor" target="_blank" class="inline-link">localhost:8000/activity/monitor</a>
         to see policy events as requests flow through. Try asking your LLM to run bash commands and watch them get blocked!
     </p>
 
     <h4>Implement Your Own Policy</h4>
     <p>
+        For most use cases, we recommend using <code>SimpleEventBasedPolicy</code>, which provides a straightforward hook-based interface.
         Create your policy class in <code>src/luthien_proxy/v2/policies/my_policy.py</code>:
     </p>
     <div class="quickstart">
