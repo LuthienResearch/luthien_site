@@ -7,8 +7,9 @@
   
 [[redirects]]
   from = "/*"
-  to = "/404.html"
-  status = 404
+  to = "https://luthienresearch.github.io/luthien-pbc-site/"
+  status = 301
+  force = true
   
 [build.environment]
   NODE_VERSION = "18"
