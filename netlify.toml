@@ -6,6 +6,12 @@
   command = "npm run start"
   
 [[redirects]]
+  from = "/updates/*"
+  to = "/updates/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "https://luthienresearch.github.io/luthien-pbc-site/"
   status = 301
