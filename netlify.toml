@@ -5,21 +5,29 @@
 [dev]
   command = "npm run start"
   
+# Old pages migrated to the new site: redirect to their new homes.
+# Specific rules must precede the catch-all (Netlify uses first match).
 [[redirects]]
-  from = "/updates/*"
-  to = "/updates/:splat"
-  status = 200
+  from = "/about"
+  to = "https://luthien.cc/about"
+  status = 301
   force = true
 
 [[redirects]]
-  from = "/about"
-  to = "/about"
-  status = 200
+  from = "/updates/2025-03-redteam-as-upsampling"
+  to = "https://luthien.cc/blog/21-points/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/updates/2025-03-controlconf"
+  to = "https://luthien.cc/blog/controlconf-london-2025/"
+  status = 301
   force = true
 
 [[redirects]]
   from = "/*"
-  to = "https://luthienresearch.github.io/luthien-pbc-site/"
+  to = "https://luthien.cc/"
   status = 301
   force = true
   
