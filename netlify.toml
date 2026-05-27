@@ -20,6 +20,12 @@
   force = true
 
 [[redirects]]
+  from = "/updates/2025-03-controlconf"
+  to = "https://luthien.cc/blog/controlconf-london-2025/"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "https://luthien.cc/"
   status = 301
